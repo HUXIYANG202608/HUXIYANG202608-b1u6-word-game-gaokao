@@ -4096,7 +4096,7 @@ function interleave(base, extra) {
 
   function praiseSlug(phrase) {
 
-    return String(phrase).toLowerCase().replace(/[^a-z ]/g, '').replace(/\s+/g, '-') + '.mp3';
+    return String(phrase).toLowerCase().replace(/[^a-z ]/g, '').replace(/\s+/g, '_') + '.mp3';
 
   }
 
@@ -4622,6 +4622,7 @@ function interleave(base, extra) {
 
 
 
+
   /* v12: build data-URL map for the B1U2 speak chain (global.AUDIO_B64[localUrlFor(word)]) */
   try {
     var _ab = {};
@@ -4650,7 +4651,7 @@ function interleave(base, extra) {
   function _loadAudioB64() {
     if (XB4_AUDIO) return Promise.resolve(XB4_AUDIO);
     if (XB4_AUDIO_LOADING) return XB4_AUDIO_LOADING;
-    XB4_AUDIO_LOADING = fetch('audio_b64.json?v=20260904u6')
+    XB4_AUDIO_LOADING = fetch('audio_b64.json?v=20260904u3')
       .then(function(r){ if(!r.ok) throw new Error('audio fetch '+r.status); return r.json(); })
       .then(function(j){ XB4_AUDIO = j; /* v13：fetch 路径下同步挂载 AUDIO_B64_PRAISE，给 speakPraiseViaLocal 优先用；AUDIO_B64 是 data URL，所以 praise 也加 data: 前缀 */ try { window.AUDIO_B64_PRAISE = {}; if (j && j.__praise__) { for (var _pk2 in j.__praise__) { window.AUDIO_B64_PRAISE[_pk2] = 'data:audio/mpeg;base64,' + j.__praise__[_pk2]; } } } catch (_) { window.AUDIO_B64_PRAISE = {}; } return j; })
       .catch(function(e){ console.warn('audio load failed:', e); XB4_AUDIO = {}; window.AUDIO_B64_PRAISE = {}; return {}; });
